@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  school-admission-db:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5440:5432"
+    volumes:
+      - ./data/pg_school_admission:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=school_admission
+      - POSTGRES_USER=school_admission
+      - POSTGRES_PASSWORD=XhNkCjTiy2r74NpQzveSBz5k
