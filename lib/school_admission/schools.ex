@@ -142,7 +142,7 @@ defmodule SchoolAdmission.Schools do
     LsatScore
     |> where([score], score.school_id == ^id)
     |> maybe_add_year_cond(years)
-    |> order_by([score], {:desc, score.year})
+    |> order_by([score], {:asc, score.year})
     |> Repo.all()
   end
 
@@ -150,7 +150,7 @@ defmodule SchoolAdmission.Schools do
     GpaScore
     |> where([score], score.school_id == ^id)
     |> maybe_add_year_cond(years)
-    |> order_by([score], {:desc, score.year})
+    |> order_by([score], {:asc, score.year})
     |> Repo.all()
   end
 
