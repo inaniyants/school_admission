@@ -18,6 +18,7 @@
     <.select2 name="test_type" label="Test type" options={["LSAT", "GPA"]} value={@test_type} />
   </div>
 
+  <%!-- todo: allow multiple years selection to compare --%>
   <%!-- <.select2
     name="year"
     label="Year"
@@ -73,7 +74,8 @@
                 get_in(@scores_metadata, [school_score.id, :is_lowest]) &&
                   "bg-red-300 text-red-800"
               ]}>
-                <%= percentile %>th percentile
+                <%= percentile %>th
+                <p class="truncate">percentile</p>
               </div>
               <div class="py-1.5 text-sm">
                 <%= Map.get(school_score, String.to_existing_atom("percentile_#{percentile}")) %>

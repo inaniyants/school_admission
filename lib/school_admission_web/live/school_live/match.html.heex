@@ -57,7 +57,7 @@
         <div class="bg-zinc-100 py-4 px-2 rounded-sm mt-2 space-y-2">
           <div class="bg-zinc-200 rounded-sm shadow-xl">
             <div class="bg-zinc-300 font-bold text-xs text-white px-1 py-1">Rank</div>
-            <div class="py-1.5 text-sm">
+            <div class="py-1.5 text-sm truncate">
               <%= get_school_rank_string(school) %>
             </div>
           </div>
@@ -78,7 +78,8 @@
                 @upper_deviation >= current_percentile_value && "bg-yellow-300 text-yellow-800",
                 @score >= current_percentile_value && "bg-lime-300 text-lime-800"
               ]}>
-                <%= percentile %>th percentile
+                <%= percentile %>th
+                <p class="truncate">percentile</p>
               </div>
               <div class="py-1.5 text-sm">
                 <%= current_percentile_value %>

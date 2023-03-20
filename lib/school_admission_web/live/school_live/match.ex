@@ -39,7 +39,6 @@ defmodule SchoolAdmissionWeb.SchoolLive.Match do
           {Schools.match_by_gpa_score(score, year, @max_schools), Decimal.new("0.15"),
            Decimal.new(score) |> Decimal.round(2)}
       end
-      |> IO.inspect(label: "matched")
 
     socket =
       socket
