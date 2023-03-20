@@ -74,7 +74,9 @@ defmodule SchoolAdmissionWeb.SchoolLive.Scores do
     school_scores = get_school_scores(test_type, school, years)
     scores_metadata = calculate_scores_metadata(school_scores)
 
-    assign(socket, school_scores: school_scores, scores_metadata: scores_metadata)
+    socket
+    |> assign(school_scores: school_scores, scores_metadata: scores_metadata)
+    |> push_event("update_chart", prepare_school_scores_for_chart(school_scores))
   end
 
   defp apply_filters(socket) do
@@ -111,6 +113,19 @@ defmodule SchoolAdmissionWeb.SchoolLive.Scores do
     scores_metadata
     |> Enum.find(fn {_score_id, metadata} -> metadata.is_lowest end)
     |> elem(1)
+  end
+
+  defp prepare_school_scores_for_chart(school_scores) do
+    school_scores = school_scores |> Enum.sort(&(&1.year <= &2.year))
+
+    %{
+      percentile_25:
+        school_scores |> Enum.map(fn el -> %{year: el.year, score: el.percentile_25} end),
+      percentile_50:
+        school_scores |> Enum.map(fn el -> %{year: el.year, score: el.percentile_50} end),
+      percentile_75:
+        school_scores |> Enum.map(fn el -> %{year: el.year, score: el.percentile_75} end)
+    }
   end
 
   defp get_school_scores("LSAT", school, years) do

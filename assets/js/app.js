@@ -25,8 +25,10 @@ import topbar from "../vendor/topbar"
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
 import Select2Live from './hooks/select2Live'
+import SchoolScoresChart from './hooks/schoolScoresChart'
 const Hooks = {
   Select2Live,
+  SchoolScoresChart,
 }
 
 let liveSocket = new LiveSocket("/live", Socket, { hooks: Hooks, params: { _csrf_token: csrfToken } })
