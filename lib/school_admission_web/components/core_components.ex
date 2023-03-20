@@ -236,6 +236,29 @@ defmodule SchoolAdmissionWeb.CoreComponents do
     """
   end
 
+  attr :for, :any, required: true, doc: "the datastructure for the form"
+  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+
+  attr :rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+
+  slot :inner_block, required: true
+  slot :actions, doc: "the slot for form actions, such as a submit button"
+
+  def horizontal_form(assigns) do
+    ~H"""
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      <div class="bg-white mt-10 flex space-x-1">
+        <%= render_slot(@inner_block, f) %>
+      </div>
+      <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
+        <%= render_slot(action, f) %>
+      </div>
+    </.form>
+    """
+  end
+
   @doc """
   Renders a button.
 
@@ -258,6 +281,28 @@ defmodule SchoolAdmissionWeb.CoreComponents do
         "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+  attr :is_active, :boolean, required: true, doc: "whether the flash can be closed"
+
+  slot :inner_block, required: true
+
+  def nav_button(assigns) do
+    ~H"""
+    <button
+      class={[
+        "phx-submit-loading:opacity-75 rounded-sm bg-zinc-100 hover:bg-zinc-400 py-2 px-3",
+        "text-sm font-semibold leading-6 text-black active:text-black/80",
+        @class,
+        @is_active && "bg-zinc-700 text-zinc-100"
       ]}
       {@rest}
     >
@@ -340,7 +385,7 @@ defmodule SchoolAdmissionWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+        class="mt-2 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -383,8 +428,8 @@ defmodule SchoolAdmissionWeb.CoreComponents do
         id={@id || @name}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
-          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
+          "mt-2 block w-full rounded-lg border-zinc-300 py-2 px-[11px]",
+          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
           "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"

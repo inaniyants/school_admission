@@ -20,6 +20,13 @@ defmodule SchoolAdmissionWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/schools", SchoolAdmissionWeb do
+    pipe_through :browser
+
+    live "/scores", SchoolLive.Scores, :index
+    live "/match", SchoolLive.Match, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SchoolAdmissionWeb do
   #   pipe_through :api

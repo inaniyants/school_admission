@@ -1,5 +1,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "select2/dist/css/select2.css"
 
 /* This file is for your main application CSS */

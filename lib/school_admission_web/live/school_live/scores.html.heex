@@ -1,0 +1,87 @@
+<.header>
+  <%= gettext("Law schools admittance scores median") %>
+</.header>
+
+<div class="flex gap-1">
+  <div class="w-2/3">
+    <.select2
+      name="school"
+      label="School"
+      prompt="Select school..."
+      options={
+        Enum.map(@streams.schools, fn {_stream_id, school} -> {school.name, school.id} end)
+      }
+    />
+  </div>
+
+  <div class="w-1/3">
+    <.select2 name="test_type" label="Test type" options={["LSAT", "GPA"]} value={@test_type} />
+  </div>
+
+  <%!-- <.select2
+    name="year"
+    label="Year"
+    prompt="Select year..."
+    value={@year}
+    options={["all"] ++ (2017..2022 |> Enum.to_list())}
+  /> --%>
+</div>
+
+<%= if !@school_scores do %>
+  <div class="bg-zinc-100 p-4 rounded-sm mt-6 space-y-2">
+    <p class="text-center text-sm font-bold text-zinc-400">
+      <%= gettext(
+        "Please choose a law school and a test type from the lists above to see the data here"
+      ) %>
+    </p>
+  </div>
+<% end %>
+
+<%= if @school_scores do %>
+  <div class="bg-zinc-100 p-4 rounded-sm mt-6 space-y-2">
+    <p>
+      <% score_metadata_max = get_highest_score_metadata(@scores_metadata) %>
+      <% score_metadata_min = get_lowest_score_metadata(@scores_metadata) %>
+      <%= gettext(
+        "Based on data for the last 6 years, the median %{test_type} score of all students admitted to %{school_name} varies from %{min_score} (min) in %{min_year} to %{max_score} (max) in %{max_year}.",
+        test_type: @test_type,
+        school_name: @school.name,
+        min_score: score_metadata_min |> Map.get(:percentile_50),
+        min_year: score_metadata_min |> Map.get(:year),
+        max_score: score_metadata_max |> Map.get(:percentile_50),
+        max_year: score_metadata_max |> Map.get(:year)
+      ) %>
+    </p>
+    <p><%= gettext("Please check more detailed score picks below") %></p>
+  </div>
+
+  <div class="flex mt-6">
+    <%= for school_score <- @school_scores do %>
+      <div class="flex flex-col w-1/6 text-center">
+        <div class="font-bold"><%= school_score.year %></div>
+        <div class="bg-zinc-100 py-4 px-2 rounded-sm mt-2 space-y-2">
+          <%= for percentile <- [75, 50, 25] do %>
+            <div class={[
+              "bg-zinc-200 rounded-sm shadow-xl",
+              get_in(@scores_metadata, [school_score.id, :is_highest]) && "bg-lime-200",
+              get_in(@scores_metadata, [school_score.id, :is_lowest]) && "bg-red-200"
+            ]}>
+              <div class={[
+                "bg-zinc-300 font-bold text-xs text-white px-1 py-1",
+                get_in(@scores_metadata, [school_score.id, :is_highest]) &&
+                  "bg-lime-300 text-lime-800",
+                get_in(@scores_metadata, [school_score.id, :is_lowest]) &&
+                  "bg-red-300 text-red-800"
+              ]}>
+                <%= percentile %>th percentile
+              </div>
+              <div class="py-1.5 text-sm">
+                <%= Map.get(school_score, String.to_existing_atom("percentile_#{percentile}")) %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
