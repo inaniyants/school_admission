@@ -22,7 +22,7 @@ This app lets users search for the median of the different test scores in variou
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Todo:
-- [x] mockup thoughts on UI\UX (see )  
+- [x] mockup thoughts on UI\UX ( [see mockups](./priv/docs/mockups.md) )  
 - [x] Implement base `Score` app requirements
 	- [x] Allow the user to select a school.
 	- [x] Output a grammatically correct sentence about the median (50th percentile) LSAT score
