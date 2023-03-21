@@ -3,6 +3,8 @@
 
 This app lets users search for the median of the different test scores in various law schools, as well as to find the best matches according to their scores.
 
+**Demo**: https://school-admission.fly.dev/
+
 ## Local development
 
 ### Prerequisites
@@ -42,9 +44,9 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 	- [x] add school rank as match criteria (sorting)
 	- [ ] add `load more` to load more matches
 - [x] Add basic mobile optimizations
-- [ ] Add `Dockerfile` to build the app into the container
+- [x] Add `Dockerfile` to build the app into the container
 - [ ] Add app to `docker-compose.yml` to simplify local env setup
-- [ ] Prepare prod env and deploy the App to fly.io or another hosting for a demo
+- [x] Prepare prod env and deploy the App to fly.io or another hosting for a demo
 - [ ] add dark theme support
 - [x] use the latest elixir ecosystem ( phoenix, erlang, OTP, deps, postgres )
 	- [ ] refactor backend code to match the latest best practices
