@@ -1,5 +1,5 @@
 defmodule SchoolAdmission.Schools.Datasource.SchoolScoresCsvParser do
-  @initial_data_csv "./priv/repo/seeds/school_scores.csv"
+  @initial_data_csv "/priv/repo/seeds/school_scores.csv"
 
   require Logger
 
@@ -9,7 +9,9 @@ defmodule SchoolAdmission.Schools.Datasource.SchoolScoresCsvParser do
           | {:ok, any}
   def execute() do
     try do
-      {:ok, parse_csv(@initial_data_csv)}
+      path = Application.app_dir(:school_admission, @initial_data_csv)
+
+      {:ok, parse_csv(path)}
     rescue
       error ->
         {:error, {:parsing_error, error}}
